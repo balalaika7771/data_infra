@@ -1,17 +1,15 @@
 {{- if .Values.minio.enabled }}
 ---
-# Секрет с полной информацией для подключения к MinIO
-# Автоматически генерируется из Vault и Values
+# ConfigMap с информацией для подключения к MinIO
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: minio-connection-info
   namespace: {{ .Values.minio.namespace }}
   labels:
     app: minio
     component: connection-info
-type: Opaque
-stringData:
+data:
   # Внутренний доступ (из кластера)
   internal-host: "minio.{{ .Values.minio.namespace }}.svc.cluster.local"
   internal-api-port: "{{ .Values.minio.external.apiPort }}"
