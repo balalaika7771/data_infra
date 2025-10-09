@@ -1,0 +1,17 @@
+# Секретная информация
+*.key
+*.pem
+*.crt
+*-secret.yaml
+secrets/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+

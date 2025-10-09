@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: data-infrastructure
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/YOUR_USERNAME/data-infra.git
+    targetRevision: main
+    path: .
+    plugin:
+      name: argocd-vault-plugin
+      env:
+      - name: VAULT_ADDR
+        value: https://vault.zhendorenko.ru
+      - name: AVP_TYPE
+        value: vault
+      - name: AVP_AUTH_TYPE
+        value: token
+      - name: AVP_SECRET_KEY
+        value: token
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
