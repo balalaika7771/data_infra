@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/YOUR_USERNAME/data-infra.git
-    targetRevision: main
+    repoURL: https://github.com/balalaika7771/data_infra.git
+    targetRevision: master
     path: .
     plugin:
       name: argocd-vault-plugin
@@ -21,8 +21,7 @@ spec:
       - name: AVP_SECRET_KEY
         value: token
   destination:
-    server: https://kubernetes.default.svc
-    namespace: default
+    name: gorky
   syncPolicy:
     automated:
       prune: true
