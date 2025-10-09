@@ -41,6 +41,10 @@ spec:
       labels:
         app: postgres
     spec:
+      {{- if .Values.postgresql.external.enabled }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
       containers:
       - name: postgres
         image: postgres:15-alpine

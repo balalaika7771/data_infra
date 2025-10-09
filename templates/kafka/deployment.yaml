@@ -28,6 +28,10 @@ spec:
       labels:
         app: kafka
     spec:
+      {{- if .Values.kafka.external.enabled }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
       containers:
       - name: kafka
         image: apache/kafka:3.7.0

@@ -40,6 +40,10 @@ spec:
       labels:
         app: minio
     spec:
+      {{- if .Values.minio.external.enabled }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
       containers:
       - name: minio
         image: minio/minio:latest
