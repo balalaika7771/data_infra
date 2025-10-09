@@ -1,0 +1,31 @@
+{{- if .Values.kafka.enabled }}
+---
+# Секрет с полной информацией для подключения к Kafka
+# Автоматически генерируется из Vault и Values
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kafka-connection-info
+  namespace: {{ .Values.kafka.namespace }}
+  labels:
+    app: kafka
+    component: connection-info
+type: Opaque
+stringData:
+  # Внутренний доступ (из кластера)
+  internal-host: "kafka.{{ .Values.kafka.namespace }}.svc.cluster.local"
+  internal-port: "{{ .Values.kafka.external.port }}"
+  internal-bootstrap-servers: "kafka.{{ .Values.kafka.namespace }}.svc.cluster.local:{{ .Values.kafka.external.port }}"
+  
+  # Внешний доступ (снаружи кластера)
+  {{- if .Values.kafka.external.enabled }}
+  external-host: "{{ .Values.externalHost }}"
+  external-port: "{{ .Values.kafka.external.port }}"
+  external-bootstrap-servers: "{{ .Values.externalHost }}:{{ .Values.kafka.external.port }}"
+  {{- end }}
+  
+  # Креденшалы
+  username: "<path:secret/data/kafka/admin#username>"
+  password: "<path:secret/data/kafka/admin#password>"
+{{- end }}
+

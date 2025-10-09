@@ -1,0 +1,40 @@
+{{- if .Values.minio.enabled }}
+---
+# Секрет с полной информацией для подключения к MinIO
+# Автоматически генерируется из Vault и Values
+apiVersion: v1
+kind: Secret
+metadata:
+  name: minio-connection-info
+  namespace: {{ .Values.minio.namespace }}
+  labels:
+    app: minio
+    component: connection-info
+type: Opaque
+stringData:
+  # Внутренний доступ (из кластера)
+  internal-host: "minio.{{ .Values.minio.namespace }}.svc.cluster.local"
+  internal-api-port: "{{ .Values.minio.external.apiPort }}"
+  internal-console-port: "{{ .Values.minio.external.consolePort }}"
+  internal-api-endpoint: "http://minio.{{ .Values.minio.namespace }}.svc.cluster.local:{{ .Values.minio.external.apiPort }}"
+  internal-console-url: "http://minio.{{ .Values.minio.namespace }}.svc.cluster.local:{{ .Values.minio.external.consolePort }}"
+  
+  # Внешний доступ (снаружи кластера)
+  {{- if .Values.minio.external.enabled }}
+  external-api-host: "{{ .Values.externalHost }}"
+  external-console-host: "{{ .Values.externalHost }}"
+  external-api-port: "{{ .Values.minio.external.apiPort }}"
+  external-console-port: "{{ .Values.minio.external.consolePort }}"
+  external-api-endpoint: "http://{{ .Values.externalHost }}:{{ .Values.minio.external.apiPort }}"
+  external-console-url: "http://{{ .Values.externalHost }}:{{ .Values.minio.external.consolePort }}"
+  {{- end }}
+  
+  # Креденшалы (S3-compatible)
+  access-key: "<path:secret/data/minio/root#username>"
+  secret-key: "<path:secret/data/minio/root#password>"
+  
+  # AWS SDK совместимость
+  aws-access-key-id: "<path:secret/data/minio/root#username>"
+  aws-secret-access-key: "<path:secret/data/minio/root#password>"
+{{- end }}
+

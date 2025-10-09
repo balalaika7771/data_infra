@@ -1,0 +1,79 @@
+# Конфигурация для data-infrastructure
+
+# Имя кластера (для внутренних имен и идентификации)
+clusterName: gorky
+
+# Базовый домен для внешнего доступа
+baseDomain: zhendorenko.ru
+
+# Внешний хост (для TCP сервисов используем прямой домен, т.к. порты разные)
+externalHost: zhendorenko.ru
+
+# Vault
+vault:
+  enabled: true
+  address: https://vault.zhendorenko.ru
+
+# PostgreSQL
+postgresql:
+  enabled: true
+  namespace: databases
+  image: postgres:15
+  # Внешний доступ
+  external:
+    enabled: true
+    port: 5432
+    # URL: postgres.gorky.zhendorenko.ru:5432
+  # Ресурсы
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  storage:
+    size: 10Gi
+
+# Kafka
+kafka:
+  enabled: true
+  namespace: messaging
+  image: apache/kafka:3.7.0
+  # Внешний доступ
+  external:
+    enabled: true
+    port: 9092
+    # URL: kafka.gorky.zhendorenko.ru:9092
+  # Ресурсы
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+
+# MinIO
+minio:
+  enabled: true
+  namespace: storage
+  image: minio/minio:latest
+  # Внешний доступ
+  external:
+    enabled: true
+    apiPort: 9000
+    consolePort: 9001
+    # API URL: minio.gorky.zhendorenko.ru:9000
+    # Console URL: console.minio.gorky.zhendorenko.ru
+  # Ресурсы
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  storage:
+    size: 50Gi
+

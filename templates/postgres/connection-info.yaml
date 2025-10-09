@@ -1,0 +1,32 @@
+{{- if .Values.postgresql.enabled }}
+---
+# Секрет с полной информацией для подключения к PostgreSQL
+# Автоматически генерируется из Vault и Values
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-connection-info
+  namespace: {{ .Values.postgresql.namespace }}
+  labels:
+    app: postgres
+    component: connection-info
+type: Opaque
+stringData:
+  # Внутренний доступ (из кластера)
+  internal-host: "postgres.{{ .Values.postgresql.namespace }}.svc.cluster.local"
+  internal-port: "{{ .Values.postgresql.external.port }}"
+  internal-url: "postgresql://<path:secret/data/databases/postgres#username>:<path:secret/data/databases/postgres#password>@postgres.{{ .Values.postgresql.namespace }}.svc.cluster.local:{{ .Values.postgresql.external.port }}/<path:secret/data/databases/postgres#database>"
+  
+  # Внешний доступ (снаружи кластера)  
+  {{- if .Values.postgresql.external.enabled }}
+  external-host: "{{ .Values.externalHost }}"
+  external-port: "{{ .Values.postgresql.external.port }}"
+  external-url: "postgresql://<path:secret/data/databases/postgres#username>:<path:secret/data/databases/postgres#password>@{{ .Values.externalHost }}:{{ .Values.postgresql.external.port }}/<path:secret/data/databases/postgres#database>"
+  {{- end }}
+  
+  # Креденшалы
+  username: "<path:secret/data/databases/postgres#username>"
+  password: "<path:secret/data/databases/postgres#password>"
+  database: "<path:secret/data/databases/postgres#database>"
+{{- end }}
+
