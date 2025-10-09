@@ -40,10 +40,6 @@ spec:
       labels:
         app: minio
     spec:
-      {{- if .Values.minio.external.enabled }}
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
-      {{- end }}
       containers:
       - name: minio
         image: minio/minio:latest
@@ -54,8 +50,14 @@ spec:
         - ":9001"
         ports:
         - containerPort: 9000
+          {{- if .Values.minio.external.enabled }}
+          hostPort: 9000
+          {{- end }}
           name: api
         - containerPort: 9001
+          {{- if .Values.minio.external.enabled }}
+          hostPort: 9001
+          {{- end }}
           name: console
         envFrom:
         - secretRef:

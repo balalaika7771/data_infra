@@ -41,15 +41,14 @@ spec:
       labels:
         app: postgres
     spec:
-      {{- if .Values.postgresql.external.enabled }}
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
-      {{- end }}
       containers:
       - name: postgres
         image: postgres:15-alpine
         ports:
         - containerPort: 5432
+          {{- if .Values.postgresql.external.enabled }}
+          hostPort: 5432
+          {{- end }}
           name: postgres
         envFrom:
         - secretRef:
