@@ -3,16 +3,6 @@ kind: Namespace
 metadata:
   name: messaging
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: kafka-credentials
-  namespace: messaging
-type: Opaque
-stringData:
-  KAFKA_USERNAME: <path:secret/data/kafka/admin#username>
-  KAFKA_PASSWORD: <path:secret/data/kafka/admin#password>
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

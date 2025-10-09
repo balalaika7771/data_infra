@@ -4,16 +4,6 @@ metadata:
   name: storage
 ---
 apiVersion: v1
-kind: Secret
-metadata:
-  name: minio-credentials
-  namespace: storage
-type: Opaque
-stringData:
-  MINIO_ROOT_USER: <path:secret/data/minio/root#username>
-  MINIO_ROOT_PASSWORD: <path:secret/data/minio/root#password>
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: minio-pvc
