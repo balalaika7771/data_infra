@@ -2,8 +2,8 @@
 *.key
 *.pem
 *.crt
-*-secret.yaml
 secrets/
+# НЕ игнорируем external-secret.yaml (это не секреты, а их декларации)
 
 # IDE
 .vscode/
