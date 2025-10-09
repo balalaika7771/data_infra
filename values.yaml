@@ -10,9 +10,12 @@ baseDomain: zhendorenko.ru
 externalHost: zhendorenko.ru
 
 # Vault
+# ВАЖНО: Secret vault-token должен быть создан вручную:
+# kubectl create secret generic vault-token -n kube-system --from-literal=token=<YOUR_TOKEN>
 vault:
   enabled: true
   address: https://vault.zhendorenko.ru
+  tokenNamespace: kube-system
 
 # PostgreSQL
 postgresql:
