@@ -7,24 +7,21 @@ metadata:
   namespace: {{ .Values.ollama.namespace }}
 data:
   # Внутренний доступ в кластере
-  internal:
-    host: "ollama.{{ .Values.ollama.namespace }}.svc.cluster.local"
-    port: "11434"
-    url: "http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434"
-    api_base: "http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434"
+  internal-host: "ollama.{{ .Values.ollama.namespace }}.svc.cluster.local"
+  internal-port: "11434"
+  internal-url: "http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434"
+  internal-api-base: "http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434"
   {{- if .Values.ollama.external.enabled }}
   # Внешний доступ
-  external:
-    host: "{{ .Values.ollama.external.host | default (printf "ollama.%s.%s" .Values.clusterName .Values.baseDomain) }}"
-    port: "{{ .Values.ollama.external.port }}"
-    url: "http://{{ .Values.ollama.external.host | default (printf "ollama.%s.%s" .Values.clusterName .Values.baseDomain) }}:{{ .Values.ollama.external.port }}"
-    api_base: "http://{{ .Values.ollama.external.host | default (printf "ollama.%s.%s" .Values.clusterName .Values.baseDomain) }}:{{ .Values.ollama.external.port }}"
+  external-host: "{{ .Values.ollama.external.host | default (printf "ollama.%s.%s" .Values.clusterName .Values.baseDomain) }}"
+  external-port: "{{ .Values.ollama.external.port }}"
+  external-url: "http://{{ .Values.ollama.external.host | default (printf "ollama.%s.%s" .Values.clusterName .Values.baseDomain) }}:{{ .Values.ollama.external.port }}"
+  external-api-base: "http://{{ .Values.ollama.external.host | default (printf "ollama.%s.%s" .Values.clusterName .Values.baseDomain) }}:{{ .Values.ollama.external.port }}"
   {{- end }}
   # Конфигурация
-  config:
-    default_model: "{{ .Values.ollama.defaultModel }}"
-    namespace: "{{ .Values.ollama.namespace }}"
-    image: "{{ .Values.ollama.image }}"
+  default-model: "{{ .Values.ollama.defaultModel }}"
+  namespace: "{{ .Values.ollama.namespace }}"
+  image: "{{ .Values.ollama.image }}"
   # Примеры использования
   examples: |
     # Запуск модели
