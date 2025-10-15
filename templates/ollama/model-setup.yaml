@@ -4,10 +4,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ollama-model-setup
+  name: ollama-model-setup-{{ .Values.ollama.defaultModel | replace ":" "-" | replace "." "-" }}
   namespace: {{ .Values.ollama.namespace }}
   annotations:
-    argocd.argoproj.io/sync-options: Prune=false,Replace=false
+    argocd.argoproj.io/sync-options: Prune=false
     argocd.argoproj.io/sync-wave: "2"
 spec:
   template:
