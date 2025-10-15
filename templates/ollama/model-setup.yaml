@@ -6,6 +6,9 @@ kind: Job
 metadata:
   name: ollama-model-setup
   namespace: {{ .Values.ollama.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   template:
     spec:
@@ -18,25 +21,39 @@ spec:
         - -c
         - |
           echo "Ожидание запуска Ollama..."
-          until curl -f http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags; do
-            echo "Ollama еще не готов, ждем..."
+          # Ждем до 5 минут пока Ollama не будет готов
+          for i in {1..30}; do
+            if curl -f -s http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags > /dev/null; then
+              echo "Ollama готов!"
+              break
+            fi
+            echo "Ollama еще не готов, ждем... ($i/30)"
             sleep 10
           done
           
-          echo "Проверяем, загружена ли модель {{ .Values.ollama.defaultModel }}..."
-          MODEL_EXISTS=$(curl -s http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags | grep -c "{{ .Values.ollama.defaultModel }}" || echo "0")
+          # Проверяем готовность еще раз
+          if ! curl -f -s http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags > /dev/null; then
+            echo "ОШИБКА: Ollama не готов после 5 минут ожидания"
+            exit 1
+          fi
           
-          if [ "$MODEL_EXISTS" -eq "0" ]; then
+          echo "Проверяем, загружена ли модель {{ .Values.ollama.defaultModel }}..."
+          MODELS_RESPONSE=$(curl -s http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags)
+          echo "Ответ от API: $MODELS_RESPONSE"
+          
+          if echo "$MODELS_RESPONSE" | grep -q "{{ .Values.ollama.defaultModel }}"; then
+            echo "Модель {{ .Values.ollama.defaultModel }} уже загружена."
+          else
             echo "Загружаем модель {{ .Values.ollama.defaultModel }}..."
             curl -X POST http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/pull \
               -H "Content-Type: application/json" \
               -d '{"name": "{{ .Values.ollama.defaultModel }}"}'
             echo "Модель {{ .Values.ollama.defaultModel }} загружена успешно!"
-          else
-            echo "Модель {{ .Values.ollama.defaultModel }} уже загружена."
           fi
           
-          echo "Доступные модели:"
+          echo "Финальная проверка - доступные модели:"
           curl -s http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags
+          echo ""
+          echo "✅ Инициализация Ollama завершена успешно!"
   backoffLimit: 3
 {{- end }}

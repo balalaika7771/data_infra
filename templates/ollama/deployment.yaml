@@ -22,6 +22,8 @@ kind: Deployment
 metadata:
   name: ollama
   namespace: {{ .Values.ollama.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   replicas: 1
   selector:
