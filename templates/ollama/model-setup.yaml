@@ -7,7 +7,7 @@ metadata:
   name: ollama-model-setup
   namespace: {{ .Values.ollama.namespace }}
   annotations:
-    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/sync-options: Prune=false,Replace=false
     argocd.argoproj.io/sync-wave: "2"
 spec:
   template:

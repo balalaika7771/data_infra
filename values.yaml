@@ -102,4 +102,8 @@ ollama:
     size: 20Gi
   # Модель по умолчанию (легкая и эффективная)
   defaultModel: "llama3.2:3b"
+  # Vault интеграция (опционально)
+  vault:
+    enabled: false
+    path: "ai/ollama"
 
