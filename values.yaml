@@ -93,10 +93,10 @@ ollama:
   # Ресурсы
   resources:
     requests:
-      memory: "1Gi"
+      memory: "3Gi"
       cpu: "500m"
     limits:
-      memory: "4Gi"
+      memory: "6Gi"
       cpu: "2000m"
   storage:
     size: 20Gi
