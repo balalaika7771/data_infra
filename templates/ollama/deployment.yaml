@@ -10,6 +10,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: ollama-pvc
   namespace: {{ .Values.ollama.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=false
 spec:
   accessModes:
     - ReadWriteOnce

@@ -8,6 +8,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
   namespace: databases
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=false
 spec:
   accessModes:
     - ReadWriteOnce
