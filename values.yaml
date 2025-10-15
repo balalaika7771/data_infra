@@ -80,3 +80,26 @@ minio:
   storage:
     size: 50Gi
 
+# Ollama LLM
+ollama:
+  enabled: true
+  namespace: ai
+  image: ollama/ollama:latest
+  # Внешний доступ
+  external:
+    enabled: true
+    port: 11434
+    # URL: ollama.gorky.zhendorenko.ru:11434
+  # Ресурсы
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "4Gi"
+      cpu: "2000m"
+  storage:
+    size: 20Gi
+  # Модель по умолчанию (легкая и эффективная)
+  defaultModel: "llama3.2:3b"
+

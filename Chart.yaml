@@ -1,6 +1,6 @@
 apiVersion: v2
 name: data-infrastructure
-description: PostgreSQL, Kafka, MinIO with Vault integration
+description: PostgreSQL, Kafka, MinIO, Ollama LLM with Vault integration
 type: application
-version: 1.0.0
-appVersion: "1.0"
+version: 1.1.0
+appVersion: "1.1"

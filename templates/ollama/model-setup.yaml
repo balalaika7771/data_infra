@@ -1,0 +1,42 @@
+{{- if .Values.ollama.enabled }}
+---
+# Job для загрузки модели по умолчанию при первом запуске
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ollama-model-setup
+  namespace: {{ .Values.ollama.namespace }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: model-setup
+        image: curlimages/curl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Ожидание запуска Ollama..."
+          until curl -f http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags; do
+            echo "Ollama еще не готов, ждем..."
+            sleep 10
+          done
+          
+          echo "Проверяем, загружена ли модель {{ .Values.ollama.defaultModel }}..."
+          MODEL_EXISTS=$(curl -s http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags | grep -c "{{ .Values.ollama.defaultModel }}" || echo "0")
+          
+          if [ "$MODEL_EXISTS" -eq "0" ]; then
+            echo "Загружаем модель {{ .Values.ollama.defaultModel }}..."
+            curl -X POST http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/pull \
+              -H "Content-Type: application/json" \
+              -d '{"name": "{{ .Values.ollama.defaultModel }}"}'
+            echo "Модель {{ .Values.ollama.defaultModel }} загружена успешно!"
+          else
+            echo "Модель {{ .Values.ollama.defaultModel }} уже загружена."
+          fi
+          
+          echo "Доступные модели:"
+          curl -s http://ollama.{{ .Values.ollama.namespace }}.svc.cluster.local:11434/api/tags
+  backoffLimit: 3
+{{- end }}
