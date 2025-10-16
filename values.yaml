@@ -117,12 +117,12 @@ openWebui:
     enabled: true
     port: 8080
     # URL: open-webui.gorky.zhendorenko.ru:30880
-  # Ресурсы
+  # Ресурсы (максимальные для стабильной работы)
   resources:
     requests:
-      memory: "256Mi"
-      cpu: "100m"
-    limits:
-      memory: "512Mi"
+      memory: "1Gi"
       cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "2000m"
 
