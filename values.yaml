@@ -93,7 +93,7 @@ ollama:
       memory: "6Gi"
       cpu: "2000m"
   storage:
-    size: 20Gi
+    size: 5Gi
   # Модель по умолчанию (легкая и эффективная)
   defaultModel: "llama3.2:1b"
     # Аутентификация
