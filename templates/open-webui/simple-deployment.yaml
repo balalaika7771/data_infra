@@ -22,7 +22,7 @@ spec:
           name: web
         env:
         - name: OLLAMA_BASE_URL
-          value: "http://ollama.ai:11434"
+          value: "http://ollama-external.ai:11434"
         - name: WEBUI_SECRET_KEY
           value: "your-secret-key-here"
         resources:
