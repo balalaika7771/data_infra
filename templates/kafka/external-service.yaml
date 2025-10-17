@@ -11,4 +11,8 @@ spec:
     targetPort: 9092
     nodePort: 30092
     name: kafka
+  - port: 9094
+    targetPort: 9094
+    nodePort: 30094
+    name: kafka-external
   type: NodePort
