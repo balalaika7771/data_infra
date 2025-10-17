@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-nodeport
+  namespace: ai
+spec:
+  selector:
+    app: ollama
+  ports:
+  - port: 11434
+    targetPort: 11434
+    nodePort: 11434
+    name: ollama
+  type: NodePort
