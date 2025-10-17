@@ -74,51 +74,11 @@ minio:
   storage:
     size: 50Gi
 
-# Ollama LLM
+# Ollama LLM отключен - используем OpenAI API
 ollama:
-  enabled: true
-  namespace: ai
-  image: ollama/ollama:latest
-  # Внешний доступ
-  external:
-    enabled: true
-    port: 11434
-    # URL: ollama.gorky.zhendorenko.ru:11434
-  # Ресурсы (увеличены для работы с llama3.2:3b)
-  resources:
-    requests:
-      memory: "3Gi"
-      cpu: "500m"
-    limits:
-      memory: "6Gi"
-      cpu: "2000m"
-  storage:
-    size: 5Gi
-  # Модель по умолчанию (легкая и эффективная)
-  defaultModel: "llama3.2:1b"
-    # Аутентификация
-  auth:
-    enabled: true
-    username: ${OLLAMA_USER:ollama}
-    password: ${OLLAMA_PASSWORD:ollama2025!SecurePass}
-  # Vault интеграция отключена
+  enabled: false
 
-# Open WebUI для Ollama
+# Open WebUI отключен - используем OpenAI API
 openWebui:
-  enabled: true
-  namespace: ai
-  image: ghcr.io/open-webui/open-webui:main
-  # Внешний доступ
-  external:
-    enabled: true
-    port: 8080
-    # URL: open-webui.gorky.zhendorenko.ru:30880
-  # Ресурсы (максимальные для стабильной работы)
-  resources:
-    requests:
-      memory: "1Gi"
-      cpu: "500m"
-    limits:
-      memory: "2Gi"
-      cpu: "2000m"
+  enabled: false
 
