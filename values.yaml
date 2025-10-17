@@ -96,12 +96,12 @@ ollama:
       memory: "3Gi"
       cpu: "500m"
     limits:
-      memory: "4Gi"
+      memory: "6Gi"
       cpu: "2000m"
   storage:
     size: 20Gi
   # Модель по умолчанию (легкая и эффективная)
-  defaultModel: "llama3.2:3b"
+  defaultModel: "llama3.2:1b"
     # Аутентификация
   auth:
     enabled: true
