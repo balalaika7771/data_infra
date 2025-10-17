@@ -51,9 +51,11 @@ spec:
           value: "MkU3OEVBNTcwNTJENDM2Qk"
         - name: KAFKA_KRAFT_MODE
           value: "true"
-        envFrom:
-        - secretRef:
-            name: kafka-credentials
+        env:
+        - name: KAFKA_USER
+          value: "admin"
+        - name: KAFKA_PASSWORD
+          value: "admin2025!SecurePass"
 ---
 apiVersion: v1
 kind: Service

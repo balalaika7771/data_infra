@@ -45,9 +45,11 @@ spec:
           name: api
         - containerPort: 9001
           name: console
-        envFrom:
-        - secretRef:
-            name: minio-credentials
+        env:
+        - name: MINIO_ROOT_USER
+          value: "minioadmin"
+        - name: MINIO_ROOT_PASSWORD
+          value: "MinIO2025!SecurePass"
         volumeMounts:
         - name: minio-storage
           mountPath: /data
