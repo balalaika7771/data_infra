@@ -102,10 +102,18 @@ ollama:
     size: 20Gi
   # Модель по умолчанию (легкая и эффективная)
   defaultModel: "llama3.2:3b"
-  # Vault интеграция (опционально)
+  # Аутентификация
+  auth:
+    enabled: true
+    username: ${OLLAMA_USER:ollama}
+    password: ${OLLAMA_PASSWORD:ollama2025!SecurePass}
+  # Vault интеграция для секретов
   vault:
-    enabled: false
+    enabled: true
     path: "ai/ollama"
+    secrets:
+      - username
+      - password
 
 # Open WebUI для Ollama
 openWebui:

@@ -45,8 +45,30 @@ spec:
         env:
         - name: OLLAMA_HOST
           value: "0.0.0.0"
+        {{- if .Values.ollama.auth.enabled }}
+        - name: OLLAMA_ORIGINS
+          value: ""
+        {{- if .Values.ollama.vault.enabled }}
+        - name: OLLAMA_USER
+          valueFrom:
+            secretKeyRef:
+              name: ollama-auth
+              key: OLLAMA_USER
+        - name: OLLAMA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ollama-auth
+              key: OLLAMA_PASSWORD
+        {{- else }}
+        - name: OLLAMA_USER
+          value: {{ .Values.ollama.auth.username | quote }}
+        - name: OLLAMA_PASSWORD
+          value: {{ .Values.ollama.auth.password | quote }}
+        {{- end }}
+        {{- else }}
         - name: OLLAMA_ORIGINS
           value: "*"
+        {{- end }}
         - name: OLLAMA_MODELS
           value: "/root/.ollama/models"
         volumeMounts:
