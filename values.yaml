@@ -96,7 +96,7 @@ ollama:
       memory: "3Gi"
       cpu: "500m"
     limits:
-      memory: "8Gi"
+      memory: "4Gi"
       cpu: "2000m"
   storage:
     size: 20Gi
