@@ -51,11 +51,16 @@ spec:
           value: "MkU3OEVBNTcwNTJENDM2Qk"
         - name: KAFKA_KRAFT_MODE
           value: "true"
-        env:
-        - name: KAFKA_USER
-          value: "admin"
-        - name: KAFKA_PASSWORD
-          value: "admin2025!SecurePass"
+        - name: KAFKA_LOG_DIRS
+          value: "/tmp/kraft-combined-logs"
+        - name: KAFKA_JMX_OPTS
+          value: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9093"
+        volumeMounts:
+        - name: kafka-logs
+          mountPath: /tmp/kraft-combined-logs
+      volumes:
+      - name: kafka-logs
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
