@@ -9,13 +9,7 @@ baseDomain: zhendorenko.ru
 # Внешний хост (для TCP сервисов используем прямой домен, т.к. порты разные)
 externalHost: zhendorenko.ru
 
-# Vault
-# ВАЖНО: Secret vault-token должен быть создан вручную:
-# kubectl create secret generic vault-token -n kube-system --from-literal=token=<YOUR_TOKEN>
-vault:
-  enabled: true
-  address: https://vault.zhendorenko.ru
-  tokenNamespace: kube-system
+# Vault отключен
 
 # PostgreSQL
 postgresql:
@@ -107,13 +101,7 @@ ollama:
     enabled: true
     username: ${OLLAMA_USER:ollama}
     password: ${OLLAMA_PASSWORD:ollama2025!SecurePass}
-  # Vault интеграция для секретов
-  vault:
-    enabled: true
-    path: "ai/ollama"
-    secrets:
-      - username
-      - password
+  # Vault интеграция отключена
 
 # Open WebUI для Ollama
 openWebui:
